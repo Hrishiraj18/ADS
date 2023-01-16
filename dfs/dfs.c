@@ -1,95 +1,46 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
 
-struct node{
-	int key;
-	struct node *left;
-	struct node *right;
-};
+#define V 6
 
-struct node* stack[100];
-int top = -1;
-
-void push(struct node * elm ){
-
-	if( top == 99 )
-		return;
-	else{
-		top++;
-		stack[top] = elm;
-	}
+void DFS(int graph[V][V], int start) {
+    bool visited[V];
+    for (int i = 0; i < V; i++) visited[i] = false;
+    // Create a stack for DFS
+    int stack[V];
+    int top = -1;
+    // Push the current source node.
+    stack[++top] = start;
+    visited[start] = true;
+    while (top >= 0) {
+        // Pop a vertex from stack and print it
+        int current = stack[top--];
+        printf("%d\t", current);
+        // Get all adjacent vertices of the popped vertex s
+        // If a adjacent has not been visited, then push it
+        // to the stack.
+        for (int i = V-1; i >= 0; i--) {
+            if (graph[current][i] && !visited[i]) {
+                stack[++top] = i;
+                visited[i] = true;
+            }
+        }
+    }
 }
 
-struct node* pop(void){
-	struct node* popped;
-
-	if(top < 0 )
-		return NULL;
-	else {
-		popped = stack[top];
-		top--;
-		return popped;
-	}
+int main() {
+    int graph[V][V] = {
+        {0, 1, 1, 0, 0, 0},
+        {0, 0, 0, 1, 0, 0},
+        {0, 0, 0, 0, 1, 0},
+        {0, 0, 0, 0, 0, 0},
+        {0, 1, 0, 0, 0, 0},
+        {0, 0, 0, 1, 0, 0}
+    };
+    DFS(graph, 0);
+    printf("\n");
+    return 0;
 }
 
-struct node* insert(struct node *startNode , int key){
-	struct node *temp;
-	if(startNode == NULL){
-		startNode = (struct node*)malloc(sizeof(struct node));
-		startNode->key = key;
-		startNode->left = NULL;
-		startNode->right = NULL;
-		
-	}
-	else if (key < startNode->key)
-		startNode->left = insert(startNode->left,key);
-	else if (key > startNode->key)
-		startNode->right = insert(startNode->right,key);
 
-	return  startNode;
-}
-
-void depthFirstTraversal(struct node *root){
-
-
-	struct node *current = NULL;
-	struct node *visited[100];
-
-	if(root == NULL )
-		return ;
-	push(root);
-
-//	printf("%d %d\n",root->key,top);
-	while( top >= 0 ){
-
-		current = pop();
-		printf("%d\n",current->key);
-		if(current->right != NULL)
-			push(current->right);
-
-		if(current->left != NULL  )
-			push(current->left);
-	}
-
-}
-
-void inOrder(struct node *root){
-	if(root == NULL)
-		return;
-	inOrder(root->left);
-	printf("%d\t",root->key);
-	inOrder(root->right);
-}
-
-void main(){
-
-	struct node* root = NULL;
-
-	root = insert(root,5);
-	root = insert(root,10);
-	root = insert(root,6);
-	root = insert(root,2);
-	root = insert(root,1);
-	root = insert(root,3);
-	depthFirstTraversal(root);
-}

@@ -26,7 +26,7 @@ root->left=insert(root->left,val);
 return root;
 }
 
-//finding minimum value of node 
+//finding minimum value of node
 struct node*minv(struct node* node)
 {
     struct node* current=node;
