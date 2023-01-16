@@ -18,7 +18,6 @@ struct node* create(int val)
 }
 
 
-
 //insertion of node
 struct node*insert(struct node*root,int val)
 {

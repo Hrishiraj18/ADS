@@ -125,6 +125,7 @@ case 5:posttrav(root);
 case 6:printf("Enter the value of node to be deleted\n");
         scanf("%d",&x);
         root=del(root,x);
+        break;
 default: printf("Invalid choice\n");
 	break;
 }
